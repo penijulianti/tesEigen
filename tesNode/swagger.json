@@ -1,0 +1,227 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Library API",
+    "description": "API untuk mengelola anggota perpustakaan dan buku"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/member": {
+      "get": {
+        "summary": "Ambil semua anggota",
+        "responses": {
+          "200": {
+            "description": "Daftar anggota",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Member"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Tambahkan anggota baru",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "member",
+            "description": "Data anggota baru",
+            "schema": {
+              "$ref": "#/definitions/Member"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Anggota berhasil ditambahkan",
+            "schema": {
+              "$ref": "#/definitions/Member"
+            }
+          }
+        }
+      }
+    },
+    "/book": {
+      "get": {
+        "summary": "Ambil semua buku",
+        "responses": {
+          "200": {
+            "description": "Daftar buku",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Book"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Tambahkan buku baru",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "book",
+            "description": "Data buku baru",
+            "schema": {
+              "$ref": "#/definitions/Book"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Buku berhasil ditambahkan",
+            "schema": {
+              "$ref": "#/definitions/Book"
+            }
+          }
+        }
+      }
+    },
+    "/members/{memberCode}/books": {
+      "get": {
+        "summary": "Ambil semua buku yang dipinjam oleh anggota tertentu",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "memberCode",
+            "required": true,
+            "type": "string",
+            "description": "Kode anggota"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Daftar buku yang dipinjam anggota",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Book"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/borrow": {
+      "post": {
+        "summary": "Pinjam buku",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "borrow",
+            "description": "Data peminjaman buku",
+            "schema": {
+              "$ref": "#/definitions/Borrow"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Peminjaman berhasil",
+            "schema": {
+              "$ref": "#/definitions/Borrow"
+            }
+          }
+        }
+      }
+    },
+    "/return": {
+      "post": {
+        "summary": "Pengembalian buku",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "return",
+            "description": "Data pengembalian buku",
+            "schema": {
+              "$ref": "#/definitions/Return"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pengembalian berhasil",
+            "schema": {
+              "$ref": "#/definitions/Return"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Member": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "isSanctioned": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Book": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "stock": {
+          "type": "integer"
+        }
+      }
+    },
+    "Borrow": {
+      "type": "object",
+      "properties": {
+        "memberCode": {
+          "type": "string",
+          "example": "MEM001"
+        },
+        "bookCode": {
+          "type": "string",
+          "example": "BK0001"
+        },
+        "borrowDate": {
+          "type": "string",
+          "format": "date",
+          "example": "2024-09-01"
+        }
+      }
+    },
+    "Return": {
+      "type": "object",
+      "properties": {
+        "memberCode": {
+          "type": "string",
+          "example": "M001"
+        },
+        "bookCode": {
+          "type": "string",
+          "example": "B001"
+        },
+        "returnDate": {
+          "type": "string",
+          "format": "date",
+          "example": "2024-09-10"
+        }
+      }
+    }
+  }
+}
